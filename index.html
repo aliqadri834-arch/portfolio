@@ -232,6 +232,26 @@
   .research-notes ul{ margin:0; padding-left:20px; }
   .research-notes li{ margin-bottom:6px; }
 
+  /* PROJECTS */
+  .project-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    padding:36px 40px;
+  }
+  .project-title{ font-size:23px; }
+  .project-desc{ margin-top:14px; font-size:15px; color:var(--ink-soft); max-width:66ch; }
+  .project-stack{
+    margin-top:20px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.03em;
+    color:var(--brass);
+  }
+  .project-footer{
+    margin-top:26px; padding-top:20px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  }
+
   .research-footer{
     margin-top:36px; padding-top:22px; border-top:1px solid var(--line);
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
@@ -294,6 +314,7 @@
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
       <a href="#research">Research</a>
+      <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#contact">Contact</a>
     </div>
@@ -468,11 +489,31 @@
   </div>
 </section>
 
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <span class="section-num mono">04</span>
+    </div>
+
+    <div class="project-card">
+      <h3 class="project-title">Market Analysis Tool</h3>
+      <p class="project-desc">A Python tool that pulls live market data across a personal watchlist and flags statistically unusual activity &mdash; volume spikes exceeding 2x the 30-day average, and price moves exceeding 1.5x the 20-day average true range. Built to support a personal options trading practice, with a modular architecture (data fetch, signal calculation, and reporting kept as separate components) designed for straightforward extension &mdash; implied volatility vs. historical volatility divergence is next.</p>
+      <div class="project-stack">PYTHON &middot; YFINANCE &middot; PANDAS</div>
+      <div class="project-footer">
+        <span class="meta-tag mono">Personal project &middot; In development</span>
+        <a class="btn" href="https://github.com/aliqadri834-arch/market-analysis-tool" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section id="education">
   <div class="wrap">
     <div class="section-head">
       <h2>Education</h2>
-      <span class="section-num mono">04</span>
+      <span class="section-num mono">05</span>
     </div>
 
     <div class="edu-block">
@@ -499,7 +540,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Skills</h2>
-      <span class="section-num mono">05</span>
+      <span class="section-num mono">06</span>
     </div>
     <div class="skills-grid">
       <div class="skill-cat">
@@ -537,7 +578,7 @@
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow" style="margin-bottom:0;">Get in touch</span>
-      <span class="section-num mono">06</span>
+      <span class="section-num mono">07</span>
     </div>
     <div class="contact-row">
       <h3 class="contact-title">Open to conversations about credit, capital markets, and risk roles.</h3>
