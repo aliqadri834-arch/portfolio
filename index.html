@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali Qadri — Economics &amp; Financial Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152232;
+    --ink-soft:#3A4552;
+    --paper:#EFEEE7;
+    --paper-raised:#F7F6F1;
+    --line:#D8D6CB;
+    --oxblood:#7C2E2A;
+    --oxblood-deep:#5E211E;
+    --brass:#A3812F;
+    --slate:#5B6772;
+    --good:#3E6952;
+    --bad:#9C3B2E;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Newsreader', serif;
+    font-weight:500;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--oxblood);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--oxblood);
+    display:inline-block;
+  }
+  a{ color:inherit; }
+  .wrap{
+    max-width:980px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(239,238,231,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:16px; padding-bottom:16px;
+  }
+  .nav-name{ font-family:'Newsreader', serif; font-weight:600; font-size:19px; }
+  .nav-links{ display:flex; font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.04em; }
+  .nav-links a{ text-decoration:none; color:var(--ink-soft); border-bottom:1px solid transparent; padding-bottom:3px; margin-right:28px; transition:border-color .15s; }
+  .nav-links a:last-child{ margin-right:0; }
+  .nav-links a:hover{ border-color:var(--oxblood); color:var(--oxblood); }
+  .nav-links a:focus-visible, a:focus-visible{ outline:2px solid var(--oxblood); outline-offset:3px; }
+
+  /* HERO */
+  header.hero{
+    padding:88px 0 64px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:56px;
+    align-items:end;
+  }
+  .hero h1{
+    font-size:52px;
+    line-height:1.05;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 em{ font-style:italic; color:var(--oxblood); }
+  .hero-role{
+    margin-top:16px;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:46ch;
+  }
+  .hero-meta{
+    margin-top:26px;
+    display:flex; flex-wrap:wrap;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--slate);
+  }
+  .hero-meta span, .hero-meta a{ margin-right:22px; margin-bottom:6px; }
+  .hero-meta a{ color:var(--slate); text-decoration:none; border-bottom:1px dotted var(--slate); }
+  .hero-meta a:hover{ color:var(--oxblood); border-color:var(--oxblood); }
+
+  .hero-stat-card{
+    background:var(--ink);
+    color:var(--paper-raised);
+    padding:28px 26px;
+    border-radius:2px;
+  }
+  .hero-stat-card .eyebrow{ color:#C79A6B; }
+  .hero-stat-card .eyebrow::before{ background:#C79A6B; }
+  .hero-stat-number{
+    font-family:'Newsreader', serif;
+    font-size:56px;
+    line-height:1;
+    margin-top:14px;
+    color:#F3E9D8;
+  }
+  .hero-stat-label{
+    margin-top:10px;
+    font-size:14px;
+    color:#C7CCD2;
+    max-width:32ch;
+  }
+  .hero-stat-source{
+    margin-top:18px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:#8E97A0;
+    border-top:1px solid #2C3947;
+    padding-top:12px;
+  }
+
+  /* SECTION */
+  section{ padding:64px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .section-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:36px; gap:20px; flex-wrap:wrap; }
+  .section-head h2{ font-size:30px; }
+  .section-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--slate); }
+
+  /* ABOUT */
+  .about-body{ max-width:64ch; font-size:16.5px; color:var(--ink-soft); }
+  .about-body p + p{ margin-top:16px; }
+
+  /* EXPERIENCE */
+  .xp-item{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:28px;
+    padding:22px 0;
+    border-top:1px solid var(--line);
+  }
+  .xp-item:last-child{ padding-bottom:0; }
+  .xp-date{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--slate); padding-top:3px; }
+  .xp-role{ font-family:'Newsreader', serif; font-size:20px; font-weight:600; }
+  .xp-org{ font-size:14.5px; color:var(--oxblood); margin-top:3px; }
+  .xp-desc{ margin-top:10px; font-size:15px; color:var(--ink-soft); max-width:60ch; }
+
+  /* RESEARCH */
+  .research-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    padding:40px;
+  }
+  .research-title{ font-size:26px; max-width:34ch; line-height:1.25; }
+  .research-sub{ margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--slate); }
+  .research-abstract{ margin-top:22px; font-size:15px; color:var(--ink-soft); max-width:68ch; }
+
+  .finding-list{ margin-top:36px; }
+  .finding{
+    display:grid;
+    grid-template-columns:56px 1fr auto;
+    gap:18px;
+    align-items:center;
+    padding:14px 0;
+    border-top:1px solid var(--line);
+  }
+  .finding:last-child{ border-bottom:1px solid var(--line); }
+  .finding-n{ font-family:'IBM Plex Mono', monospace; color:var(--slate); font-size:13px; }
+  .finding-label{ font-size:15px; }
+  .finding-bar-wrap{ width:220px; height:10px; background:#E3E1D5; border-radius:2px; position:relative; }
+  .finding-bar{ height:100%; background:var(--oxblood); border-radius:2px; }
+  .finding-val{ font-family:'IBM Plex Mono', monospace; font-size:14px; color:var(--oxblood); text-align:right; min-width:52px; }
+
+  @media (max-width:640px){
+    .finding{ grid-template-columns:32px 1fr; }
+    .finding-bar-wrap{ grid-column:1 / -1; width:100%; margin-top:4px; }
+    .finding-val{ grid-column:2; text-align:left; }
+  }
+
+  .chart-block{ margin-top:44px; }
+  .chart-label{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--slate); margin-bottom:14px; }
+  .diverging-row{ display:grid; grid-template-columns:150px 1fr; gap:14px; align-items:center; padding:6px 0; font-size:13.5px; }
+  .diverging-track{ position:relative; height:16px; background:transparent; }
+  .diverging-mid{ position:absolute; left:50%; top:-4px; bottom:-4px; width:1px; background:var(--line); }
+  .diverging-bar{ position:absolute; top:2px; height:12px; border-radius:1px; }
+  .diverging-bar.pos{ background:var(--good); }
+  .diverging-bar.neg{ background:var(--bad); }
+  .diverging-val{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--slate); }
+
+  .research-notes{ margin-top:40px; font-size:14.5px; color:var(--ink-soft); max-width:68ch; }
+  .research-notes h4{ font-family:'IBM Plex Sans',sans-serif; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--ink); margin-bottom:10px; }
+  .research-notes ul{ margin:0; padding-left:20px; }
+  .research-notes li{ margin-bottom:6px; }
+
+  .research-footer{
+    margin-top:36px; padding-top:22px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px;
+    padding:11px 18px;
+    border:1px solid var(--ink);
+    color:var(--ink); text-decoration:none;
+    transition:background .15s, color .15s;
+  }
+  .btn:hover{ background:var(--ink); color:var(--paper-raised); }
+  .btn.primary{ background:var(--oxblood); border-color:var(--oxblood); color:#F5EDE2; }
+  .btn.primary:hover{ background:var(--oxblood-deep); border-color:var(--oxblood-deep); }
+  .meta-tag{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); }
+
+  /* SKILLS */
+  .skills-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .skill-cat h4{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--oxblood); margin-bottom:12px; }
+  .skill-cat ul{ list-style:none; margin:0; padding:0; font-size:14.5px; color:var(--ink-soft); }
+  .skill-cat li{ padding:6px 0; border-top:1px solid var(--line); }
+  @media (max-width:720px){ .skills-grid{ grid-template-columns:1fr; } }
+
+  /* EDUCATION */
+  .edu-block{ display:grid; grid-template-columns:180px 1fr; gap:28px; }
+  .edu-title{ font-family:'Newsreader', serif; font-size:20px; font-weight:600; }
+  .edu-org{ color:var(--oxblood); font-size:14.5px; margin-top:3px; }
+  .edu-detail{ margin-top:10px; font-size:15px; color:var(--ink-soft); max-width:62ch; }
+
+  /* FOOTER / CONTACT */
+  footer{ padding:64px 0 48px; }
+  .contact-row{ display:flex; justify-content:space-between; align-items:end; flex-wrap:wrap; gap:32px; }
+  .contact-title{ font-size:32px; max-width:16ch; }
+  .contact-links{ display:flex; flex-direction:column; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:14px; }
+  .contact-links a{ text-decoration:none; color:var(--ink-soft); }
+  .contact-links a:hover{ color:var(--oxblood); }
+  .foot-note{ margin-top:48px; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--slate); border-top:1px solid var(--line); padding-top:20px; }
+
+  @media (max-width:760px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero h1{ font-size:38px; }
+    .xp-item{ grid-template-columns:1fr; gap:6px; }
+    .edu-block{ grid-template-columns:1fr; gap:6px; }
+    .research-card{ padding:26px; }
+    nav .nav-links{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-name">Ali Qadri</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#research">Research</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Economics &amp; Financial Analysis</div>
+        <h1>Ali Qadri builds the <em>evidence</em> behind the decision.</h1>
+        <p class="hero-role">Economics Honours graduate and CFA Level&nbsp;I candidate focused on credit analysis, capital markets, and risk. Currently at Wealthsimple; formerly the author of a 1.76M-observation econometric study of wages in Canada.</p>
+        <div class="hero-meta">
+          <span>Ottawa &amp; Toronto, ON</span>
+          <a href="mailto:Aliqadri834@gmail.com">Aliqadri834@gmail.com</a>
+          <a href="tel:3439988779">343&nbsp;998&nbsp;8779</a>
+          <a href="https://linkedin.com/in/ali-qadri" target="_blank" rel="noopener">linkedin.com/in/ali-qadri</a>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="eyebrow">Headline finding</div>
+        <div class="hero-stat-number">+26.8%</div>
+        <div class="hero-stat-label">Wage premium for a bachelor's degree over 0&ndash;8 years of schooling, holding occupation, industry, region, and demographics fixed.</div>
+        <div class="hero-stat-source">Source: Qadri (2025), LFS PUMF 2018&ndash;2025, n=1,759,743</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>About</h2>
+      <span class="section-num mono">01</span>
+    </div>
+    <div class="about-body">
+      <p>I'm an Economics Honours graduate from Carleton University and a CFA Level&nbsp;I candidate, currently working in financial services at Wealthsimple. My work sits at the intersection of quantitative rigor and applied finance &mdash; I like problems where a defensible model and a clear write-up actually change the decision on the table.</p>
+      <p>Outside of formal analysis, I trade single-name equity options in a personal account, which keeps my understanding of derivatives, positioning, and risk grounded in something with real consequences. I'm building toward a career in credit analysis, capital markets, or institutional risk &mdash; roles where the same instinct that drove a 1.76-million-row regression is exactly the point.</p>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Experience</h2>
+      <span class="section-num mono">02</span>
+    </div>
+
+    <div class="xp-item">
+      <div class="xp-date mono">Apr 2026 &mdash; Present</div>
+      <div>
+        <div class="xp-role">Client Experience Associate, Level 2</div>
+        <div class="xp-org">Wealthsimple Technologies &middot; Banking Team</div>
+        <div class="xp-desc">Own escalated client and account investigations in a live, regulated environment &mdash; identifying root causes, coordinating across risk, product, and engineering, and documenting resolutions under AML/ATF and conduct-risk standards.</div>
+      </div>
+    </div>
+
+    <div class="xp-item">
+      <div class="xp-date mono">Apr &mdash; Aug 2025</div>
+      <div>
+        <div class="xp-role">Insurance Advisor Trainee</div>
+        <div class="xp-org">Desjardins Insurance</div>
+        <div class="xp-desc">Completed a 16-week P&amp;C training program covering risk assessment, coverage structuring, and regulatory compliance.</div>
+      </div>
+    </div>
+
+    <div class="xp-item">
+      <div class="xp-date mono">Sep 2024 &mdash; Apr 2026</div>
+      <div>
+        <div class="xp-role">Operations Associate</div>
+        <div class="xp-org">Indigo Parking</div>
+        <div class="xp-desc">Ran daily financial reconciliation across high-volume sites, holding discrepancies to zero and maintaining audit-ready documentation under deadline pressure.</div>
+      </div>
+    </div>
+
+    <div class="xp-item">
+      <div class="xp-date mono">May &mdash; Sep 2022</div>
+      <div>
+        <div class="xp-role">Business Development Representative</div>
+        <div class="xp-org">MPN Capital Markets</div>
+        <div class="xp-desc">Built and managed a 150+ account CRM pipeline through direct outreach to commercial and institutional decision-makers.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="research">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Research</h2>
+      <span class="section-num mono">03</span>
+    </div>
+
+    <div class="research-card">
+      <div class="meta-tag mono">Honours Thesis &middot; December 2025</div>
+      <h3 class="research-title">Returns to Education in Canada: An Econometric Analysis of Real Wages, 2018&ndash;2025</h3>
+      <div class="research-sub">Carleton University, Department of Economics</div>
+
+      <p class="research-abstract">Using pooled Labour Force Survey (LFS) microdata across 1,759,743 observations (weighted to ~558M person-records), I estimate a fully saturated Mincer-style wage model &mdash; ln(w<sub>i</sub>) = &beta;&#8321;Education<sub>i</sub> + X&#8242;<sub>i</sub>&gamma; + &delta;<sub>p</sub> + &delta;<sub>t</sub> + &epsilon;<sub>i</sub> &mdash; controlling for occupation, industry, union status, establishment size, family structure, province, and year, with standard errors clustered at the province level. The result: education returns in Canada are strong, monotonic, and economically large even after stripping out every observable confounder I could get my hands on.</p>
+
+      <div class="finding-list">
+        <div class="chart-label">Education wage premium, relative to 0&ndash;8 years of schooling</div>
+
+        <div class="finding">
+          <div class="finding-n mono">01</div>
+          <div class="finding-label">Some high school</div>
+          <div class="finding-bar-wrap"><div class="finding-bar" style="width:10.9%"></div></div>
+          <div class="finding-val mono">+3.8%</div>
+        </div>
+        <div class="finding">
+          <div class="finding-n mono">02</div>
+          <div class="finding-label">High school graduate</div>
+          <div class="finding-bar-wrap"><div class="finding-bar" style="width:19.2%"></div></div>
+          <div class="finding-val mono">+6.7%</div>
+        </div>
+        <div class="finding">
+          <div class="finding-n mono">03</div>
+          <div class="finding-label">Some postsecondary</div>
+          <div class="finding-bar-wrap"><div class="finding-bar" style="width:29.0%"></div></div>
+          <div class="finding-val mono">+10.1%</div>
+        </div>
+        <div class="finding">
+          <div class="finding-n mono">04</div>
+          <div class="finding-label">Postsecondary diploma</div>
+          <div class="finding-bar-wrap"><div class="finding-bar" style="width:40.4%"></div></div>
+          <div class="finding-val mono">+14.1%</div>
+        </div>
+        <div class="finding">
+          <div class="finding-n mono">05</div>
+          <div class="finding-label">Bachelor&rsquo;s degree</div>
+          <div class="finding-bar-wrap"><div class="finding-bar" style="width:76.8%"></div></div>
+          <div class="finding-val mono">+26.8%</div>
+        </div>
+        <div class="finding">
+          <div class="finding-n mono">06</div>
+          <div class="finding-label">Above bachelor&rsquo;s degree</div>
+          <div class="finding-bar-wrap"><div class="finding-bar" style="width:100%"></div></div>
+          <div class="finding-val mono">+34.9%</div>
+        </div>
+      </div>
+      <div class="meta-tag mono" style="margin-top:10px;">All estimates significant at the 1% level. Robust SE clustered by province (n=10 clusters).</div>
+
+      <div class="chart-block">
+        <div class="chart-label">Occupation wage differential vs. management (non-management roles)</div>
+        <div id="occ-chart"></div>
+      </div>
+
+      <div class="chart-block">
+        <div class="chart-label">Industry wage premium, relative to reference sector</div>
+        <div id="ind-chart"></div>
+      </div>
+
+      <div class="research-notes">
+        <h4>Other findings</h4>
+        <ul>
+          <li>Women earn ~15.7% less than men after controlling for education, occupation, industry, region, and job characteristics &mdash; a persistent, unexplained gap consistent with prior Statistics Canada research.</li>
+          <li>Regional premiums are large even after conditioning on productivity-linked covariates: Alberta (+12.4%) and British Columbia (+11.1%) pay a premium; Atlantic provinces carry a &minus;5% to &minus;7% penalty.</li>
+          <li>Kernel density estimates show the wage distribution for bachelor's-degree holders isn't just shifted right of the 0&ndash;8-years group &mdash; it's also more dispersed, with a materially thicker upper tail.</li>
+        </ul>
+      </div>
+
+      <div class="research-footer">
+        <span class="meta-tag mono">Stata &middot; LFS PUMF 2018&ndash;2025 &middot; R&sup2; = 0.484</span>
+        <div style="display:flex; gap:12px;">
+          <a class="btn" href="Returns_To_Education_-_Ali_Qadri.pdf" target="_blank" rel="noopener">Read the full paper &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Education</h2>
+      <span class="section-num mono">04</span>
+    </div>
+
+    <div class="edu-block">
+      <div class="xp-date mono">2021 &mdash; Apr 2026</div>
+      <div>
+        <div class="edu-title">Bachelor of Arts, Economics (Honours)</div>
+        <div class="edu-org">Carleton University, Ottawa</div>
+        <div class="edu-detail">Coursework: Applied Econometrics (STATA), Financial Economics, Money &amp; Banking, International Finance, Mathematical Economics I &amp; II, Economic Data Analysis.</div>
+      </div>
+    </div>
+
+    <div class="edu-block" style="margin-top:28px;">
+      <div class="xp-date mono">Sitting Nov 2026</div>
+      <div>
+        <div class="edu-title">CFA Level I Candidate</div>
+        <div class="edu-org">CFA Institute</div>
+        <div class="edu-detail">Curriculum spans equity and fixed income valuation, derivatives, portfolio management, corporate finance, and financial statement analysis.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Skills</h2>
+      <span class="section-num mono">05</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-cat">
+        <h4>Analysis</h4>
+        <ul>
+          <li>Financial modelling &amp; valuation</li>
+          <li>Econometric regression (OLS, panel)</li>
+          <li>Credit &amp; risk assessment</li>
+          <li>Reconciliation &amp; discrepancy resolution</li>
+        </ul>
+      </div>
+      <div class="skill-cat">
+        <h4>Technical</h4>
+        <ul>
+          <li>Python (data pipelines, automation)</li>
+          <li>STATA (regression, panel data)</li>
+          <li>Advanced Excel</li>
+          <li>SQL (working proficiency)</li>
+        </ul>
+      </div>
+      <div class="skill-cat">
+        <h4>Markets</h4>
+        <ul>
+          <li>Derivatives &amp; options mechanics</li>
+          <li>Fixed income fundamentals</li>
+          <li>Personal options trading</li>
+          <li>Regulatory compliance (AML/ATF)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="margin-bottom:0;">Get in touch</span>
+      <span class="section-num mono">06</span>
+    </div>
+    <div class="contact-row">
+      <h3 class="contact-title">Open to conversations about credit, capital markets, and risk roles.</h3>
+      <div class="contact-links">
+        <a href="mailto:Aliqadri834@gmail.com">Aliqadri834@gmail.com</a>
+        <a href="tel:3439988779">343&nbsp;998&nbsp;8779</a>
+        <a href="https://linkedin.com/in/ali-qadri" target="_blank" rel="noopener">LinkedIn &rarr;</a>
+      </div>
+    </div>
+    <div class="foot-note mono">Ali Qadri &middot; Ottawa / Toronto, ON &middot; Updated 2026</div>
+  </div>
+</footer>
+
+<script>
+  // Occupation wage differential (all negative vs. management)
+  const occData = [
+    { label: "Nat/Applied Sci", val: -39.3 },
+    { label: "Health", val: -26.9 },
+    { label: "Edu/Law/Social/Gov", val: -20.6 },
+    { label: "Arts/Sport", val: -27.2 },
+    { label: "Sales/Service", val: -36.2 },
+    { label: "Trades/Transport", val: -43.1 },
+    { label: "NatResource/Agri", val: -43.2 },
+    { label: "Manufacturing/Util", val: -57.8 },
+  ];
+
+  const indData = [
+    { label: "Fishing", val: 24.3 },
+    { label: "Mining/Oil/Gas", val: 50.2 },
+    { label: "Utilities", val: 41.7 },
+    { label: "Construction", val: 33.6 },
+    { label: "Manuf-Durable", val: 20.8 },
+    { label: "Manuf-NonDur", val: 18.0 },
+    { label: "Wholesale", val: 25.2 },
+    { label: "Retail", val: 2.7 },
+    { label: "Finance/Ins", val: 30.5 },
+    { label: "Real Estate", val: 22.7 },
+    { label: "Prof/Tech", val: 33.4 },
+    { label: "Public Admin", val: 22.0 },
+  ];
+
+  function renderDiverging(containerId, data){
+    const max = Math.max(...data.map(d => Math.abs(d.val)));
+    const container = document.getElementById(containerId);
+    data.forEach(d => {
+      const row = document.createElement('div');
+      row.className = 'diverging-row';
+      const pct = (Math.abs(d.val) / max) * 48; // max 48% of half-track
+      const isPos = d.val >= 0;
+      row.innerHTML = `
+        <div>${d.label}</div>
+        <div class="diverging-track">
+          <div class="diverging-mid"></div>
+          <div class="diverging-bar ${isPos ? 'pos' : 'neg'}"
+               style="${isPos ? 'left:50%' : 'right:50%'}; width:${pct}%;"></div>
+        </div>
+      `;
+      const valSpan = document.createElement('span');
+      valSpan.className = 'diverging-val mono';
+      valSpan.style.marginLeft = '10px';
+      valSpan.textContent = (isPos ? '+' : '') + d.val.toFixed(1) + '%';
+      row.querySelector('.diverging-track').appendChild(valSpan);
+      container.appendChild(row);
+    });
+  }
+
+  renderDiverging('occ-chart', occData);
+  renderDiverging('ind-chart', indData);
+</script>
+
+</body>
+</html>
