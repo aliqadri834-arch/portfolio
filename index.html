@@ -345,9 +345,9 @@
     <div class="nav-name">Ali Qadri</div>
     <div class="nav-links">
       <a href="#about">About</a>
+      <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#research">Research</a>
-      <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#contact">Contact</a>
     </div>
@@ -364,7 +364,6 @@
         <div class="hero-meta">
           <span>Ottawa &amp; Toronto, ON</span>
           <a href="mailto:Aliqadri834@gmail.com">Aliqadri834@gmail.com</a>
-          <a href="tel:3439988779">343&nbsp;998&nbsp;8779</a>
           <a href="https://linkedin.com/in/ali-qadri" target="_blank" rel="noopener">linkedin.com/in/ali-qadri</a>
         </div>
       </div>
@@ -391,11 +390,47 @@
   </div>
 </section>
 
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <span class="section-num mono">02</span>
+    </div>
+
+    <div class="project-card">
+      <h3 class="project-title">Market Analysis Tool</h3>
+      <p class="project-desc">A Python tool that pulls live market data across a personal watchlist and flags statistically unusual activity &mdash; volume spikes exceeding 2x the 30-day average, and price moves exceeding 1.5x the 20-day average true range. The watchlist itself is deliberate: NVDA and SPY are the names I trade options on most, TSLA and QQQ add a second high-beta name and a second broad benchmark so I can tell whether a move is stock-specific or market-wide, and AAPL, GOOG, and AMZN round it out with liquid, easy-to-read names. Built to support a personal options trading practice, with a modular architecture (data fetch, signal calculation, and reporting kept as separate components) designed for straightforward extension &mdash; implied volatility vs. historical volatility divergence is next.</p>
+      <div class="project-stack">PYTHON &middot; YFINANCE &middot; PANDAS</div>
+
+      <div class="signals-widget" id="market-signals">
+        <div class="signals-widget-head">
+          <div class="chart-label" style="margin-bottom:0;">Live signals &mdash; watchlist</div>
+          <span class="signals-updated mono" id="signals-updated"></span>
+        </div>
+        <div class="signals-table-wrap">
+          <table class="signals-table">
+            <thead><tr id="signals-head-row"></tr></thead>
+            <tbody id="signals-body">
+              <tr><td class="signals-loading" colspan="8">Loading live signals&hellip;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="project-footer">
+        <span class="meta-tag mono">Personal project &middot; In development</span>
+        <a class="btn" href="https://github.com/aliqadri834-arch/market-analysis-tool" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section id="experience">
   <div class="wrap">
     <div class="section-head">
       <h2>Experience</h2>
-      <span class="section-num mono">02</span>
+      <span class="section-num mono">03</span>
     </div>
 
     <div class="xp-item">
@@ -441,7 +476,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Research</h2>
-      <span class="section-num mono">03</span>
+      <span class="section-num mono">04</span>
     </div>
 
     <div class="research-card">
@@ -522,42 +557,6 @@
   </div>
 </section>
 
-<section id="projects">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Projects</h2>
-      <span class="section-num mono">04</span>
-    </div>
-
-    <div class="project-card">
-      <h3 class="project-title">Market Analysis Tool</h3>
-      <p class="project-desc">A Python tool that pulls live market data across a personal watchlist and flags statistically unusual activity &mdash; volume spikes exceeding 2x the 30-day average, and price moves exceeding 1.5x the 20-day average true range. Built to support a personal options trading practice, with a modular architecture (data fetch, signal calculation, and reporting kept as separate components) designed for straightforward extension &mdash; implied volatility vs. historical volatility divergence is next.</p>
-      <div class="project-stack">PYTHON &middot; YFINANCE &middot; PANDAS</div>
-
-      <div class="signals-widget" id="market-signals">
-        <div class="signals-widget-head">
-          <div class="chart-label" style="margin-bottom:0;">Live signals &mdash; watchlist</div>
-          <span class="signals-updated mono" id="signals-updated"></span>
-        </div>
-        <div class="signals-table-wrap">
-          <table class="signals-table">
-            <thead><tr id="signals-head-row"></tr></thead>
-            <tbody id="signals-body">
-              <tr><td class="signals-loading" colspan="8">Loading live signals&hellip;</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="project-footer">
-        <span class="meta-tag mono">Personal project &middot; In development</span>
-        <a class="btn" href="https://github.com/aliqadri834-arch/market-analysis-tool" target="_blank" rel="noopener">View on GitHub &rarr;</a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <section id="education">
   <div class="wrap">
     <div class="section-head">
@@ -633,7 +632,6 @@
       <h3 class="contact-title">Open to conversations about credit, capital markets, and risk roles.</h3>
       <div class="contact-links">
         <a href="mailto:Aliqadri834@gmail.com">Aliqadri834@gmail.com</a>
-        <a href="tel:3439988779">343&nbsp;998&nbsp;8779</a>
         <a href="https://linkedin.com/in/ali-qadri" target="_blank" rel="noopener">LinkedIn &rarr;</a>
       </div>
     </div>
