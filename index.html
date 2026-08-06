@@ -95,6 +95,35 @@
   .nav-links a:hover{ border-color:var(--oxblood); color:var(--oxblood); }
   .nav-links a:focus-visible, a:focus-visible{ outline:2px solid var(--oxblood); outline-offset:3px; }
 
+  .nav-toggle{ display:none; }
+
+  @media (max-width:760px){
+    .nav-toggle{
+      display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px;
+      width:32px; height:32px; padding:0;
+      background:none; border:none; cursor:pointer;
+    }
+    .nav-toggle span{
+      display:block; width:100%; height:2px; background:var(--ink);
+      transition:transform .2s, opacity .2s;
+    }
+    nav.nav-open .nav-toggle span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    nav.nav-open .nav-toggle span:nth-child(2){ opacity:0; }
+    nav.nav-open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+    nav .nav-links{
+      display:none;
+      position:absolute; top:100%; left:0; right:0;
+      flex-direction:column;
+      background:var(--paper-raised);
+      border-bottom:1px solid var(--line);
+      padding:4px 32px 16px;
+    }
+    nav.nav-open .nav-links{ display:flex; }
+    .nav-links a{ margin-right:0; padding:13px 0; border-bottom:1px solid var(--line); }
+    .nav-links a:last-child{ border-bottom:none; }
+  }
+
   /* HERO */
   header.hero{
     padding:88px 0 64px;
@@ -166,6 +195,18 @@
   .section-head h2{ font-size:30px; }
   .section-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--slate); }
 
+  /* Scroll reveal. The .reveal class is added by JS only -- if JS never
+     runs, sections simply never get opacity:0 and stay visible. */
+  .reveal{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .5s ease-out, transform .5s ease-out;
+  }
+  .reveal.in-view{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1!important; transform:none!important; transition:none!important; }
+  }
+
   /* ABOUT */
   .about-body{ max-width:64ch; font-size:16.5px; color:var(--ink-soft); }
   .about-body p + p{ margin-top:16px; }
@@ -189,6 +230,11 @@
     background:var(--paper-raised);
     border:1px solid var(--line);
     padding:40px;
+    transition:transform .18s ease-out, box-shadow .18s ease-out;
+  }
+  .research-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(21,34,50,0.10);
   }
   .research-title{ font-size:26px; max-width:34ch; line-height:1.25; }
   .research-sub{ margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--slate); }
@@ -237,6 +283,11 @@
     background:var(--paper-raised);
     border:1px solid var(--line);
     padding:36px 40px;
+    transition:transform .18s ease-out, box-shadow .18s ease-out;
+  }
+  .project-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(21,34,50,0.10);
   }
   .project-title{ font-size:23px; }
   .project-desc{ margin-top:14px; font-size:15px; color:var(--ink-soft); max-width:66ch; }
@@ -261,7 +312,13 @@
   .signals-widget{ margin-top:32px; }
   .signals-widget-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
   .signals-updated{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--slate); }
-  .signals-table-wrap{ overflow-x:auto; border:1px solid var(--line); background:var(--paper); }
+  .signals-table-wrap{ position:relative; overflow-x:auto; border:1px solid var(--line); background:var(--paper); }
+  .signals-table-wrap::after{
+    content:"";
+    position:absolute; top:0; right:0; bottom:0; width:28px;
+    background:linear-gradient(to right, transparent, var(--paper));
+    pointer-events:none;
+  }
   .signals-table{ width:100%; border-collapse:collapse; font-size:13.5px; }
   .signals-table th, .signals-table td{
     padding:10px 14px;
@@ -274,20 +331,47 @@
     text-align:left;
     font-family:'IBM Plex Sans', sans-serif;
     font-weight:500;
+    position:sticky; left:0; z-index:1;
+    background:var(--paper);
   }
   .signals-table thead th{
     font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--slate);
     cursor:pointer; user-select:none;
     transition:color .15s;
   }
+  .signals-table thead th:first-child{ z-index:2; }
   .signals-table thead th:hover{ color:var(--oxblood); }
   .signals-table tbody tr:last-child td{ border-bottom:none; }
   .signals-table .flag-tag{ color:var(--oxblood); font-weight:600; }
   .signals-row-flagged{ background:rgba(124,46,42,0.06); }
+  .signals-row-flagged td:first-child{ background-color:#E8E2DC; }
   .signals-row-error{ color:var(--slate); font-style:italic; }
+  .signals-row-enter{ animation:signalsRowIn .4s ease-out both; }
+  @keyframes signalsRowIn{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:none; }
+  }
   .signals-loading{ padding:20px; text-align:left; font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--slate); white-space:normal; }
+  .signals-catalyst-row td{
+    text-align:left;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    background:rgba(124,46,42,0.03);
+    padding:8px 14px;
+    white-space:normal;
+  }
+  .signals-table .signals-catalyst-row td:first-child{
+    position:static;
+    background:transparent;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .signals-catalyst-row a{ color:var(--oxblood); text-decoration:none; border-bottom:1px dotted var(--oxblood); }
+  .signals-catalyst-row a:hover{ color:var(--oxblood-deep); border-color:var(--oxblood-deep); }
+  .signals-catalyst-row.signals-catalyst-unclear td{ color:var(--slate); font-style:italic; }
   @media (max-width:640px){
     .signals-table th, .signals-table td{ padding:8px 10px; font-size:12.5px; }
+    .signals-table thead th{ padding:11px 10px; }
   }
   .btn{
     display:inline-flex; align-items:center; gap:8px;
@@ -295,9 +379,9 @@
     padding:11px 18px;
     border:1px solid var(--ink);
     color:var(--ink); text-decoration:none;
-    transition:background .15s, color .15s;
+    transition:background .15s, color .15s, transform .15s;
   }
-  .btn:hover{ background:var(--ink); color:var(--paper-raised); }
+  .btn:hover{ background:var(--ink); color:var(--paper-raised); transform:translateY(-1px); }
   .btn.primary{ background:var(--oxblood); border-color:var(--oxblood); color:#F5EDE2; }
   .btn.primary:hover{ background:var(--oxblood-deep); border-color:var(--oxblood-deep); }
   .meta-tag{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); }
@@ -330,20 +414,24 @@
     .xp-item{ grid-template-columns:1fr; gap:6px; }
     .edu-block{ grid-template-columns:1fr; gap:6px; }
     .research-card{ padding:26px; }
-    nav .nav-links{ display:none; }
+    .project-card{ padding:26px; }
+    .contact-title{ font-size:24px; }
   }
 
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
+    .project-card, .research-card, .btn{ transition:background .15s, color .15s; }
+    .project-card:hover, .research-card:hover, .btn:hover{ transform:none; box-shadow:none; }
+    .signals-row-enter{ animation:none; }
   }
 </style>
 </head>
 <body>
 
-<nav>
+<nav id="site-nav">
   <div class="wrap">
     <div class="nav-name">Ali Qadri</div>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
@@ -351,6 +439,9 @@
       <a href="#education">Education</a>
       <a href="#contact">Contact</a>
     </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -640,6 +731,76 @@
 </footer>
 
 <script>
+(function () {
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.__prefersReducedMotion = prefersReducedMotion;
+
+  // Section reveal on scroll. .reveal is added by JS only -- if this
+  // script never runs, sections keep their default visible state.
+  if ('IntersectionObserver' in window) {
+    var sections = document.querySelectorAll('section, footer#contact');
+    sections.forEach(function (el) { el.classList.add('reveal'); });
+
+    if (prefersReducedMotion) {
+      sections.forEach(function (el) { el.classList.add('in-view'); });
+    } else {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      sections.forEach(function (el) { observer.observe(el); });
+    }
+  }
+
+  // Shared count-up helper: animates 0 -> the numeric value already in
+  // targetText, preserving its exact formatting (sign, decimals, suffix)
+  // as the final frame. Falls back to setting the text immediately under
+  // reduced-motion or if the text isn't numeric.
+  function animateCountUp(el, targetText, opts) {
+    opts = opts || {};
+    var duration = opts.duration || 1000;
+    var suffix = opts.suffix || '';
+    var decimals = opts.decimals !== undefined ? opts.decimals : 2;
+    var trimmed = String(targetText).trim();
+    var prefix = trimmed.charAt(0) === '+' ? '+' : '';
+    var target = parseFloat(trimmed);
+
+    if (prefersReducedMotion || isNaN(target)) {
+      el.textContent = targetText;
+      return;
+    }
+
+    var start = null;
+    function tick(now) {
+      if (start === null) start = now;
+      var progress = Math.min((now - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = target * eased;
+      el.textContent = prefix + current.toFixed(decimals) + suffix;
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = targetText;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  window.__animateCountUp = animateCountUp;
+
+  // Hero stat count-up on load. The static "+26.8%" already in the HTML
+  // is the fallback if this never runs.
+  var heroStat = document.querySelector('.hero-stat-number');
+  if (heroStat) {
+    animateCountUp(heroStat, heroStat.textContent, { duration: 1000, suffix: '%', decimals: 1 });
+  }
+})();
+</script>
+
+<script>
   // Occupation wage differential (all negative vs. management)
   const occData = [
     { label: "Nat/Applied Sci", val: -39.3 },
@@ -693,6 +854,32 @@
 </script>
 
 <script>
+(function () {
+  const nav = document.getElementById('site-nav');
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+
+  function closeNav() {
+    nav.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  links.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') closeNav();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('nav-open') && !nav.contains(e.target)) closeNav();
+  });
+})();
+</script>
+
+<script>
 (async function () {
   // Raw GitHub content is always live (no CDN caching), matching the
   // 30-min update cadence from the GitHub Actions workflow.
@@ -715,6 +902,28 @@
   let rows = [];
   let sortKey = "ticker";
   let sortAsc = true;
+  let isFirstRender = true;
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function catalystRowHtml(row) {
+    if (row.catalyst_status === "found" && row.catalyst) {
+      const headline = escapeHtml(row.catalyst.headline);
+      const source = escapeHtml(row.catalyst.source);
+      const url = escapeHtml(row.catalyst.url || "#");
+      return `<tr class="signals-catalyst-row"><td colspan="${COLUMNS.length}">Possible catalyst: <a href="${url}" target="_blank" rel="noopener">${headline}</a> &mdash; ${source}</td></tr>`;
+    }
+    if (row.catalyst_status === "unclear") {
+      return `<tr class="signals-catalyst-row signals-catalyst-unclear"><td colspan="${COLUMNS.length}">No clear catalyst identified</td></tr>`;
+    }
+    return "";
+  }
 
   function formatCell(row, key) {
     if (row.error) return "";
@@ -759,9 +968,9 @@
         if (row.error) {
           return `<tr class="signals-row-error"><td>${row.ticker}</td><td colspan="${COLUMNS.length - 1}">Error: ${row.error}</td></tr>`;
         }
-        const flagged = row.volume_flagged || row.atr_flagged;
+        const flagged = row.volume_flagged || row.atr_flagged || row.iv_hv_flagged;
         const cells = COLUMNS.map((col) => `<td>${formatCell(row, col.key)}</td>`).join("");
-        return `<tr class="${flagged ? "signals-row-flagged" : ""}">${cells}</tr>`;
+        return `<tr class="${flagged ? "signals-row-flagged" : ""}">${cells}</tr>` + catalystRowHtml(row);
       })
       .join("");
 
@@ -777,6 +986,24 @@
         render();
       });
     });
+
+    // Only animate the very first render. Re-running this on every sort
+    // click would mean the table visibly "reloads" each time someone
+    // clicks a header -- the opposite of what a sortable table should feel
+    // like.
+    if (isFirstRender) {
+      isFirstRender = false;
+      const dataRows = body.querySelectorAll("tr:not(.signals-row-error):not(.signals-catalyst-row)");
+      dataRows.forEach((tr, i) => {
+        tr.classList.add("signals-row-enter");
+        tr.style.animationDelay = `${i * 45}ms`;
+
+        const priceCell = tr.children[1]; // Price is the 2nd column
+        if (priceCell && window.__animateCountUp) {
+          window.__animateCountUp(priceCell, priceCell.textContent, { duration: 700, decimals: 2 });
+        }
+      });
+    }
   }
 
   try {
