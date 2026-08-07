@@ -683,6 +683,11 @@
         <p>I checked whether these flags actually predict anything &mdash; pooling ~6 months of history, did a ticker move differently over the next 1&ndash;5 days when flagged vs. not? Flagged occurrences showed a slightly higher average forward return, but the spread relative to the sample size (n=64) doesn't clear the bar for statistical significance yet. Read as directional, not validated &mdash; I'd rather say that plainly than round it up.</p>
       </div>
 
+      <div class="callout">
+        <div class="callout-label mono">How I actually use this</div>
+        <p>On July 31, 2026, AMZN tripped both flags at once &mdash; volume 2.3x normal and a one-day move 5.3x the typical ATR, as the stock jumped 15.3% ($235.50 to $271.58) in a single session. That kind of double-flag is rare enough to be worth a second look: the move continued another 4.6% the next day before giving it back, closing roughly flat three days out from the flagged level. It's exactly the kind of thing I built this to catch &mdash; not a prediction of what happens next (the backtest above already told me not to expect that), just an honest flag that something outside the ordinary happened that day.</p>
+      </div>
+
       <div class="signals-widget" id="market-signals">
         <div class="signals-widget-head">
           <div class="chart-label" style="margin-bottom:0;">Live signals &mdash; watchlist</div>
