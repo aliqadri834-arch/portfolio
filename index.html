@@ -309,10 +309,44 @@
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
   }
 
+  /* PROJECTS — meta cluster: version history + backtest callout */
+  .project-changelog{ margin-top:14px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-soft); }
+  .changelog-tag{ color:var(--oxblood); font-weight:600; margin-right:4px; }
+  .changelog-arrow{ color:var(--slate); margin:0 8px; }
+
+  .callout{
+    margin-top:24px;
+    padding:16px 20px;
+    border:1px solid var(--line);
+    border-left:3px solid var(--slate);
+    background:var(--paper);
+  }
+  .callout-label{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--slate); margin-bottom:8px; }
+  .callout p{ margin:0; font-size:14.5px; color:var(--ink-soft); max-width:66ch; }
+
   /* PROJECTS — live signals widget */
   .signals-widget{ margin-top:32px; }
   .signals-widget-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
-  .signals-updated{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--slate); }
+  .live-badge{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 12px 5px 10px;
+  }
+  .live-dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--good);
+    flex-shrink:0;
+    animation:liveDotPulse 2s ease-in-out infinite;
+  }
+  @keyframes liveDotPulse{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:.35; }
+  }
   .signals-table-wrap{ position:relative; overflow-x:auto; border:1px solid var(--line); background:var(--paper); }
   .signals-table-wrap::after{
     content:"";
@@ -424,6 +458,7 @@
     .project-card, .research-card, .btn{ transition:background .15s, color .15s; }
     .project-card:hover, .research-card:hover, .btn:hover{ transform:none; box-shadow:none; }
     .signals-row-enter{ animation:none; }
+    .live-dot{ animation:none; }
   }
 </style>
 </head>
@@ -494,10 +529,23 @@
       <p class="project-desc">A Python tool that pulls live market data across a personal watchlist and flags statistically unusual activity &mdash; volume spikes exceeding 2x the 30-day average, and price moves exceeding 1.5x the 20-day average true range. The watchlist itself is deliberate: NVDA and SPY are the names I trade options on most, TSLA and QQQ add a second high-beta name and a second broad benchmark so I can tell whether a move is stock-specific or market-wide, and AAPL, GOOG, and AMZN round it out with liquid, easy-to-read names. Built to support a personal options trading practice, with a modular architecture (data fetch, signal calculation, and reporting kept as separate components) designed for straightforward extension &mdash; implied volatility vs. historical volatility divergence is next.</p>
       <div class="project-stack">PYTHON &middot; YFINANCE &middot; PANDAS</div>
 
+      <div class="project-changelog">
+        <span class="changelog-tag">v1</span> Volume + ATR
+        <span class="changelog-arrow">&rarr;</span>
+        <span class="changelog-tag">v2</span> IV/HV divergence
+        <span class="changelog-arrow">&rarr;</span>
+        <span class="changelog-tag">v3</span> Catalyst detection
+      </div>
+
+      <div class="callout">
+        <div class="callout-label mono">Backtest result</div>
+        <p>I checked whether these flags actually predict anything &mdash; pooling ~6 months of history, did a ticker move differently over the next 1&ndash;5 days when flagged vs. not? Flagged occurrences showed a slightly higher average forward return, but the spread relative to the sample size (n=64) doesn't clear the bar for statistical significance yet. Read as directional, not validated &mdash; I'd rather say that plainly than round it up.</p>
+      </div>
+
       <div class="signals-widget" id="market-signals">
         <div class="signals-widget-head">
           <div class="chart-label" style="margin-bottom:0;">Live signals &mdash; watchlist</div>
-          <span class="signals-updated mono" id="signals-updated"></span>
+          <span class="live-badge"><span class="live-dot"></span>Live <span id="signals-updated"></span></span>
         </div>
         <div class="signals-table-wrap">
           <table class="signals-table">
@@ -507,6 +555,16 @@
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div class="research-notes">
+        <h4>How this was built</h4>
+        <ul>
+          <li>Backtested the existing volume/ATR flags against six months of history before adding IV/HV, to get an honest read on whether flagging predicts anything before layering on a third signal.</li>
+          <li>1.5x ATR multiplier for the price-move signal &mdash; 2x barely fired (too quiet to be useful daily), 1.0x fired too often to mean anything; 1.5x was the middle ground.</li>
+          <li>IV/HV fetch failures are isolated from the main signal record, so one bad options-chain fetch doesn't blank out the volume/ATR numbers that already succeeded for that ticker.</li>
+          <li>Catalyst matching requires the ticker/company name in the headline title itself &mdash; Yahoo's news feed mixes in unrelated companies, so "closest in time" alone isn't enough to call something a catalyst.</li>
+        </ul>
       </div>
 
       <div class="project-footer">
@@ -636,6 +694,16 @@
           <li>Women earn ~15.7% less than men after controlling for education, occupation, industry, region, and job characteristics &mdash; a persistent, unexplained gap consistent with prior Statistics Canada research.</li>
           <li>Regional premiums are large even after conditioning on productivity-linked covariates: Alberta (+12.4%) and British Columbia (+11.1%) pay a premium; Atlantic provinces carry a &minus;5% to &minus;7% penalty.</li>
           <li>Kernel density estimates show the wage distribution for bachelor's-degree holders isn't just shifted right of the 0&ndash;8-years group &mdash; it's also more dispersed, with a materially thicker upper tail.</li>
+        </ul>
+      </div>
+
+      <div class="research-notes">
+        <h4>Methodology &amp; limitations</h4>
+        <ul>
+          <li>Standard errors are clustered by province, not just heteroskedasticity-robust &mdash; wage determination correlates within a province via local labour-market and policy conditions, and ignoring that would understate the true uncertainty on every estimate.</li>
+          <li>Controls span occupation, industry, union status, establishment size, family structure, province, and year &mdash; the aim is isolating the education effect from as much observable confounding as the LFS microdata supports, not a crude raw comparison.</li>
+          <li>Limitation: this is observational, not causal. The model can't rule out that part of the education premium reflects unobserved ability or motivation rather than education itself &mdash; the standard ability-bias critique of Mincer-style wage regressions.</li>
+          <li>Limitation: LFS PUMF is a repeated cross-section, not a panel, so this captures a point-in-time association across different people, not within-person wage growth from gaining more education.</li>
         </ul>
       </div>
 
@@ -1012,7 +1080,7 @@
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     rows = payload.signals;
-    updatedEl.textContent = "Updated " + new Date(payload.generated_at).toLocaleString();
+    updatedEl.textContent = "— updated " + new Date(payload.generated_at).toLocaleString();
     render();
   } catch (err) {
     body.innerHTML = `<tr><td class="signals-loading" colspan="${COLUMNS.length}">Failed to load live signals.</td></tr>`;
