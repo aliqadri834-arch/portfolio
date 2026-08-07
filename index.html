@@ -408,6 +408,50 @@
     .signals-table th, .signals-table td{ padding:8px 10px; font-size:12.5px; }
     .signals-table thead th{ padding:11px 10px; }
   }
+
+  /* PROJECTS — yield curve widget */
+  .yc-widget{ margin-top:32px; }
+  .yc-block{ margin-top:28px; }
+  .yc-block:first-child{ margin-top:0; }
+
+  .yc-curve-svg, .yc-hist-svg{ width:100%; height:auto; display:block; }
+  .yc-curve-line{ fill:none; stroke:var(--oxblood); stroke-width:2; }
+  .yc-curve-point{ fill:var(--oxblood); }
+  .yc-curve-axis{ stroke:var(--line); stroke-width:1; }
+  .yc-curve-tick{ font-family:'IBM Plex Mono', monospace; font-size:10px; fill:var(--slate); }
+  .yc-curve-val{ font-family:'IBM Plex Mono', monospace; font-size:10px; fill:var(--ink-soft); }
+
+  .yc-spreads{ display:flex; gap:20px; flex-wrap:wrap; }
+  .yc-spread-card{ border:1px solid var(--line); padding:14px 18px; min-width:150px; background:var(--paper); }
+  .yc-spread-name{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); }
+  .yc-spread-val{ font-family:'Newsreader', serif; font-size:26px; margin-top:4px; }
+  .yc-spread-val.inverted{ color:var(--bad); }
+  .yc-spread-val.normal{ color:var(--good); }
+  .yc-spread-status{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; margin-top:4px; }
+  .yc-spread-status.inverted{ color:var(--bad); }
+  .yc-spread-status.normal{ color:var(--slate); }
+
+  .yc-hist-line{ fill:none; stroke:var(--slate); stroke-width:1.5; }
+  .yc-hist-zero{ stroke:var(--line); stroke-width:1; stroke-dasharray:3,3; }
+  .yc-hist-inverted-region{ fill:rgba(156,59,46,0.08); }
+  .yc-hist-tick{ font-family:'IBM Plex Mono', monospace; font-size:10px; fill:var(--slate); }
+
+  .yc-calc-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; }
+  .yc-field label{ display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--slate); margin-bottom:6px; }
+  .yc-field input, .yc-field select{
+    width:100%; padding:9px 10px; font-family:'IBM Plex Mono', monospace; font-size:13.5px;
+    border:1px solid var(--line); background:var(--paper); color:var(--ink);
+  }
+  .yc-field input:focus, .yc-field select:focus{ outline:2px solid var(--oxblood); outline-offset:1px; }
+  .yc-calc-results{ display:flex; gap:22px; margin-top:20px; flex-wrap:wrap; }
+  .yc-result{ border-left:2px solid var(--oxblood); padding-left:14px; }
+  .yc-result-label{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--slate); }
+  .yc-result-val{ font-family:'Newsreader', serif; font-size:24px; margin-top:4px; color:var(--ink); }
+  .yc-calc-note{ margin-top:14px; font-size:12.5px; color:var(--slate); max-width:60ch; }
+  @media (max-width:640px){
+    .yc-calc-grid{ grid-template-columns:1fr 1fr; }
+  }
+
   .btn{
     display:inline-flex; align-items:center; gap:8px;
     font-family:'IBM Plex Mono', monospace; font-size:13px;
@@ -570,6 +614,89 @@
       <div class="project-footer">
         <span class="meta-tag mono">Personal project &middot; In development</span>
         <a class="btn" href="https://github.com/aliqadri834-arch/market-analysis-tool" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+      </div>
+    </div>
+
+    <div class="project-card" style="margin-top:28px;">
+      <h3 class="project-title">Fixed Income / Yield Curve Analyzer</h3>
+      <p class="project-desc">A Python tool that pulls the U.S. Treasury's daily par yield curve directly &mdash; no API key, just their public CSV &mdash; and tracks the 2Y-10Y and 3M-10Y spreads for inversion, alongside an interactive duration/convexity calculator built on the standard bond-math formulas. Same architecture as the market analysis tool: a pure-calculation module doing the spread math, a fetch layer doing the network I/O, and nothing in between mixing the two.</p>
+      <div class="project-stack">PYTHON &middot; PANDAS &middot; TREASURY.GOV</div>
+
+      <div class="project-changelog">
+        <span class="changelog-tag">v1</span> Spreads + inversion tracking + duration calculator
+      </div>
+
+      <div class="yc-widget" id="yield-curve-widget">
+        <div class="yc-block">
+          <div class="chart-label">Current par yield curve &mdash; <span id="yc-curve-date"></span></div>
+          <svg class="yc-curve-svg" id="yc-curve-svg" viewBox="0 0 820 220"></svg>
+        </div>
+
+        <div class="yc-block">
+          <div class="chart-label">Spreads &amp; inversion status</div>
+          <div class="yc-spreads" id="yc-spreads-container"></div>
+        </div>
+
+        <div class="yc-block">
+          <div class="chart-label">2Y-10Y spread, trailing history &mdash; shaded region = inverted</div>
+          <svg class="yc-hist-svg" id="yc-hist-svg" viewBox="0 0 820 160"></svg>
+        </div>
+
+        <div class="yc-block">
+          <div class="chart-label">Duration &amp; convexity calculator</div>
+          <div class="yc-calc-grid">
+            <div class="yc-field">
+              <label for="yc-calc-face">Face value</label>
+              <input type="number" id="yc-calc-face" value="1000" min="0" step="1">
+            </div>
+            <div class="yc-field">
+              <label for="yc-calc-coupon">Coupon rate (%)</label>
+              <input type="number" id="yc-calc-coupon" value="5" min="0" step="0.01">
+            </div>
+            <div class="yc-field">
+              <label for="yc-calc-yield">Yield to maturity (%)</label>
+              <input type="number" id="yc-calc-yield" value="5" min="0" step="0.01">
+            </div>
+            <div class="yc-field">
+              <label for="yc-calc-maturity">Maturity (years)</label>
+              <input type="number" id="yc-calc-maturity" value="10" min="0.1" step="0.1">
+            </div>
+            <div class="yc-field">
+              <label for="yc-calc-freq">Coupon frequency</label>
+              <select id="yc-calc-freq">
+                <option value="1">Annual</option>
+                <option value="2" selected>Semiannual</option>
+                <option value="4">Quarterly</option>
+                <option value="12">Monthly</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="yc-calc-results">
+            <div class="yc-result">
+              <div class="yc-result-label">Price</div>
+              <div class="yc-result-val" id="yc-result-price">&mdash;</div>
+            </div>
+            <div class="yc-result">
+              <div class="yc-result-label">Macaulay duration</div>
+              <div class="yc-result-val" id="yc-result-macaulay">&mdash;</div>
+            </div>
+            <div class="yc-result">
+              <div class="yc-result-label">Modified duration</div>
+              <div class="yc-result-val" id="yc-result-modified">&mdash;</div>
+            </div>
+            <div class="yc-result">
+              <div class="yc-result-label">Convexity</div>
+              <div class="yc-result-val" id="yc-result-convexity">&mdash;</div>
+            </div>
+          </div>
+          <div class="yc-calc-note">Modified duration approximates the % price change for a 1% yield move; convexity is the second-order correction: %&Delta;Price &asymp; &minus;D<sub>mod</sub>&middot;&Delta;y + 0.5&middot;Convexity&middot;(&Delta;y)&sup2;.</div>
+        </div>
+      </div>
+
+      <div class="project-footer">
+        <span class="meta-tag mono">Personal project &middot; In development</span>
+        <a class="btn" href="https://github.com/aliqadri834-arch/yield-curve-analyzer" target="_blank" rel="noopener">View on GitHub &rarr;</a>
       </div>
     </div>
 
@@ -789,7 +916,7 @@
       <span class="section-num mono">07</span>
     </div>
     <div class="contact-row">
-      <h3 class="contact-title">Open to conversations about credit, capital markets, and risk roles.</h3>
+      <h3 class="contact-title">Open to conversations.</h3>
       <div class="contact-links">
         <a href="mailto:Aliqadri834@gmail.com">Aliqadri834@gmail.com</a>
         <a href="https://linkedin.com/in/ali-qadri" target="_blank" rel="noopener">LinkedIn &rarr;</a>
@@ -1085,6 +1212,165 @@
   } catch (err) {
     body.innerHTML = `<tr><td class="signals-loading" colspan="${COLUMNS.length}">Failed to load live signals.</td></tr>`;
     console.error(err);
+  }
+})();
+</script>
+
+<script>
+// ---- Pure bond-math: numbers in, numbers out, no DOM. ----
+function bondPriceAndDuration(faceValue, couponRatePct, yieldPct, maturityYears, frequency) {
+  const couponRate = couponRatePct / 100;
+  const y = yieldPct / 100;
+  const periods = Math.round(maturityYears * frequency);
+  const periodicCoupon = (couponRate / frequency) * faceValue;
+  const periodicYield = y / frequency;
+
+  let price = 0;
+  let macaulaySum = 0;
+  let convexitySum = 0;
+
+  for (let t = 1; t <= periods; t++) {
+    const cf = (t === periods) ? periodicCoupon + faceValue : periodicCoupon;
+    const discounted = cf / Math.pow(1 + periodicYield, t);
+    price += discounted;
+    macaulaySum += t * discounted;
+    convexitySum += (cf * t * (t + 1)) / Math.pow(1 + periodicYield, t + 2);
+  }
+
+  const macaulayDuration = (macaulaySum / price) / frequency;
+  const modifiedDuration = macaulayDuration / (1 + periodicYield);
+  const convexity = (convexitySum / price) / (frequency * frequency);
+
+  return { price, macaulayDuration, modifiedDuration, convexity };
+}
+
+(function () {
+  const faceEl = document.getElementById('yc-calc-face');
+  const couponEl = document.getElementById('yc-calc-coupon');
+  const yieldEl = document.getElementById('yc-calc-yield');
+  const maturityEl = document.getElementById('yc-calc-maturity');
+  const freqEl = document.getElementById('yc-calc-freq');
+
+  const priceOut = document.getElementById('yc-result-price');
+  const macaulayOut = document.getElementById('yc-result-macaulay');
+  const modifiedOut = document.getElementById('yc-result-modified');
+  const convexityOut = document.getElementById('yc-result-convexity');
+
+  function recalc() {
+    const face = parseFloat(faceEl.value);
+    const coupon = parseFloat(couponEl.value);
+    const yld = parseFloat(yieldEl.value);
+    const maturity = parseFloat(maturityEl.value);
+    const freq = parseFloat(freqEl.value);
+
+    if ([face, coupon, yld, maturity, freq].some(v => isNaN(v)) || face <= 0 || maturity <= 0 || freq <= 0) {
+      priceOut.textContent = macaulayOut.textContent = modifiedOut.textContent = convexityOut.textContent = '—';
+      return;
+    }
+
+    const r = bondPriceAndDuration(face, coupon, yld, maturity, freq);
+    priceOut.textContent = r.price.toFixed(2);
+    macaulayOut.textContent = r.macaulayDuration.toFixed(2) + ' yr';
+    modifiedOut.textContent = r.modifiedDuration.toFixed(2) + ' yr';
+    convexityOut.textContent = r.convexity.toFixed(2);
+  }
+
+  [faceEl, couponEl, yieldEl, maturityEl, freqEl].forEach(el => {
+    el.addEventListener('input', recalc);
+    el.addEventListener('change', recalc);
+  });
+  recalc();
+})();
+
+(async function () {
+  const DATA_URL = "https://raw.githubusercontent.com/aliqadri834-arch/yield-curve-analyzer/main/data/curve.json";
+
+  function renderCurveChart(curve) {
+    const svg = document.getElementById('yc-curve-svg');
+    const W = 820, H = 220, padL = 46, padR = 20, padT = 16, padB = 30;
+    const years = curve.map(p => p.years);
+    const rates = curve.map(p => p.rate);
+    const logMin = Math.log10(Math.min(...years));
+    const logMax = Math.log10(Math.max(...years));
+    const rMin = Math.min(...rates) - 0.15;
+    const rMax = Math.max(...rates) + 0.15;
+
+    const x = (yrs) => padL + ((Math.log10(yrs) - logMin) / (logMax - logMin)) * (W - padL - padR);
+    const y = (rate) => (H - padB) - ((rate - rMin) / (rMax - rMin)) * (H - padT - padB);
+
+    const points = curve.map(p => `${x(p.years)},${y(p.rate)}`).join(' ');
+
+    let svgContent = `<line class="yc-curve-axis" x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}"/>`;
+    svgContent += `<polyline class="yc-curve-line" points="${points}"/>`;
+    curve.forEach(p => {
+      svgContent += `<circle class="yc-curve-point" cx="${x(p.years)}" cy="${y(p.rate)}" r="3"/>`;
+      svgContent += `<text class="yc-curve-tick" x="${x(p.years)}" y="${H - padB + 14}" text-anchor="middle">${p.tenor.replace(' Month','.5M').replace(' Mo','M').replace(' Yr','Y')}</text>`;
+    });
+    svgContent += `<text class="yc-curve-val" x="${padL - 8}" y="${y(rMax - 0.15) + 4}" text-anchor="end">${(rMax-0.15).toFixed(1)}%</text>`;
+    svgContent += `<text class="yc-curve-val" x="${padL - 8}" y="${y(rMin + 0.15) + 4}" text-anchor="end">${(rMin+0.15).toFixed(1)}%</text>`;
+
+    svg.innerHTML = svgContent;
+  }
+
+  function renderHistChart(history) {
+    const svg = document.getElementById('yc-hist-svg');
+    const W = 820, H = 160, padL = 46, padR = 20, padT = 14, padB = 24;
+    const values = history.map(h => h.value);
+    const vMin = Math.min(...values, 0) - 0.1;
+    const vMax = Math.max(...values, 0) + 0.1;
+
+    const x = (i) => padL + (i / (history.length - 1)) * (W - padL - padR);
+    const y = (v) => (H - padB) - ((v - vMin) / (vMax - vMin)) * (H - padT - padB);
+    const zeroY = y(0);
+
+    const points = history.map((h, i) => `${x(i)},${y(h.value)}`).join(' ');
+
+    let shadedRects = '';
+    let runStart = null;
+    history.forEach((h, i) => {
+      const inverted = h.value < 0;
+      if (inverted && runStart === null) runStart = i;
+      if (!inverted && runStart !== null) {
+        shadedRects += `<rect class="yc-hist-inverted-region" x="${x(runStart)}" y="${padT}" width="${x(i) - x(runStart)}" height="${zeroY - padT}"/>`;
+        runStart = null;
+      }
+    });
+    if (runStart !== null) {
+      shadedRects += `<rect class="yc-hist-inverted-region" x="${x(runStart)}" y="${padT}" width="${x(history.length - 1) - x(runStart)}" height="${zeroY - padT}"/>`;
+    }
+
+    let svgContent = shadedRects;
+    svgContent += `<line class="yc-hist-zero" x1="${padL}" y1="${zeroY}" x2="${W - padR}" y2="${zeroY}"/>`;
+    svgContent += `<polyline class="yc-hist-line" points="${points}"/>`;
+    svgContent += `<text class="yc-hist-tick" x="${padL}" y="${H - 6}" text-anchor="start">${history[0].date}</text>`;
+    svgContent += `<text class="yc-hist-tick" x="${W - padR}" y="${H - 6}" text-anchor="end">${history[history.length - 1].date}</text>`;
+
+    svg.innerHTML = svgContent;
+  }
+
+  function renderSpreads(spreads) {
+    const container = document.getElementById('yc-spreads-container');
+    container.innerHTML = Object.values(spreads).map(s => `
+      <div class="yc-spread-card">
+        <div class="yc-spread-name mono">${s.label}</div>
+        <div class="yc-spread-val ${s.inverted ? 'inverted' : 'normal'}">${s.current >= 0 ? '+' : ''}${s.current.toFixed(2)}%</div>
+        <div class="yc-spread-status ${s.inverted ? 'inverted' : 'normal'}">${s.inverted ? 'Inverted' : 'Normal'}</div>
+      </div>
+    `).join('');
+  }
+
+  try {
+    const res = await fetch(DATA_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+
+    document.getElementById('yc-curve-date').textContent = payload.curve_date;
+    renderCurveChart(payload.curve);
+    renderSpreads(payload.spreads);
+    renderHistChart(payload.spreads['2yr10yr'].history);
+  } catch (err) {
+    console.error(err);
+    document.getElementById('yield-curve-widget').insertAdjacentHTML('afterbegin', '<p style="color:var(--bad)">Failed to load yield curve data.</p>');
   }
 })();
 </script>
