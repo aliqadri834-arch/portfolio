@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aliqadri834-arch.github.io/portfolio/">
 <meta property="og:title" content="Ali Qadri — Economics & Financial Analysis">
-<meta property="og:description" content="Trying something new — a place to showcase my research and a bit of personal creativity beyond the standard resume. Open to conversations about credit, capital markets, and risk.">
+<meta property="og:description" content="Trying something new — a place to showcase my research and a bit of personal creativity beyond the standard resume. Open to conversations about credit, capital markets, and risk. Also builds small data dashboards and automations for businesses.">
 <meta property="og:image" content="https://aliqadri834-arch.github.io/portfolio/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -18,10 +18,10 @@
 <!-- Twitter/X card (also used as fallback by some other platforms) -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ali Qadri — Economics & Financial Analysis">
-<meta name="twitter:description" content="Trying something new — a place to showcase my research and a bit of personal creativity beyond the standard resume. Open to conversations about credit, capital markets, and risk.">
+<meta name="twitter:description" content="Trying something new — a place to showcase my research and a bit of personal creativity beyond the standard resume. Open to conversations about credit, capital markets, and risk. Also builds small data dashboards and automations for businesses.">
 <meta name="twitter:image" content="https://aliqadri834-arch.github.io/portfolio/og-image.png">
 
-<meta name="description" content="Economics Honours graduate and CFA Level I candidate — research, experience, and background in credit analysis, capital markets, and risk.">
+<meta name="description" content="Economics Honours graduate and CFA Level I candidate — research, experience, and background in credit analysis, capital markets, and risk. Also builds small data dashboards and automations for businesses.">
 
 <script>
   // Set data-theme before first paint, so there's no flash of the wrong
@@ -63,6 +63,8 @@
     --stat-label:#C7CCD2;
     --stat-source:#8E97A0;
     --stat-border:#2C3947;
+    --btn-primary-text:#F5EDE2;
+    --sample-wash:rgba(163,129,47,0.10);
   }
 
   /* Dark mode: not an inversion filter -- every color below was picked
@@ -99,6 +101,10 @@
     --stat-label:#4A4842;
     --stat-source:#6B6860;
     --stat-border:#B8B2A5;
+    /* oxblood is now a lighter terracotta, so the primary-button text
+       needs to flip dark for contrast, not stay light-on-dark. */
+    --btn-primary-text:#2A1B12;
+    --sample-wash:rgba(201,166,92,0.10);
   }
   @media (prefers-reduced-motion: no-preference){
     body{ transition:background-color .2s ease-out, color .2s ease-out; }
@@ -552,7 +558,7 @@
     transition:background .15s, color .15s, transform .15s;
   }
   .btn:hover{ background:var(--ink); color:var(--paper-raised); transform:translateY(-1px); }
-  .btn.primary{ background:var(--oxblood); border-color:var(--oxblood); color:#F5EDE2; }
+  .btn.primary{ background:var(--oxblood); border-color:var(--oxblood); color:var(--btn-primary-text); }
   .btn.primary:hover{ background:var(--oxblood-deep); border-color:var(--oxblood-deep); }
   .meta-tag{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); }
 
@@ -568,6 +574,37 @@
   .edu-title{ font-family:'Newsreader', serif; font-size:20px; font-weight:600; }
   .edu-org{ color:var(--oxblood); font-size:14.5px; margin-top:3px; }
   .edu-detail{ margin-top:10px; font-size:15px; color:var(--ink-soft); max-width:62ch; }
+
+  /* SERVICES */
+  .capability-card h4{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--oxblood); margin-bottom:10px; }
+  .capability-card p{ font-size:14.5px; color:var(--ink-soft); margin:0; }
+  .capability-proof{ margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); }
+
+  .services-cta{
+    margin-top:40px; padding-top:28px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  .services-cta p{ margin:0; font-size:15px; color:var(--ink-soft); max-width:50ch; }
+
+  /* Sample dashboard -- deliberately NOT styled like the real live
+     widgets. Dashed border + a persistent banner, so it can't be
+     mistaken for one of the actual live tools even at a glance. */
+  .sample-dashboard{
+    margin-top:36px;
+    border:1.5px dashed var(--brass);
+    background:var(--sample-wash);
+    padding:0;
+  }
+  .sample-banner{
+    display:flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--brass);
+    padding:10px 20px;
+    border-bottom:1.5px dashed var(--brass);
+  }
+  .sample-dashboard-body{ padding:24px 20px 28px; }
+  .sample-dashboard-title{ font-size:17px; margin-bottom:4px; }
+  .sample-dashboard-sub{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); margin-bottom:18px; }
 
   /* FOOTER / CONTACT */
   footer{ padding:64px 0 48px; }
@@ -609,6 +646,7 @@
         <a href="#experience">Experience</a>
         <a href="#research">Research</a>
         <a href="#education">Education</a>
+        <a href="#services">Services</a>
         <a href="#contact">Contact</a>
       </div>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
@@ -1011,11 +1049,132 @@
   </div>
 </section>
 
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Services</h2>
+      <span class="section-num mono">07</span>
+    </div>
+
+    <div class="about-body">
+      <p>I build small, focused data tools for businesses still running on manual spreadsheets &mdash; the same discipline behind the live projects above, aimed at day-to-day business questions instead of academic ones: live dashboards that update themselves, scheduled pulls that replace a recurring manual task, simple alert logic that flags when something needs attention, and calculators built around whatever formula actually drives your decision. The market analysis tool and yield curve analyzer above aren't demos &mdash; they're the same kind of tool, running on their own schedule via GitHub Actions, no server I maintain and no manual re-running required.</p>
+    </div>
+
+    <div class="skills-grid" style="margin-top:36px;">
+      <div class="capability-card">
+        <h4>Live dashboards</h4>
+        <p>A page that shows current data and refreshes itself &mdash; no re-running a script, no re-exporting a spreadsheet.</p>
+        <div class="capability-proof">&rarr; Market Analysis Tool, Yield Curve Analyzer</div>
+      </div>
+      <div class="capability-card">
+        <h4>Scheduled automation</h4>
+        <p>A recurring data pull or check that runs on its own schedule in the background, unattended.</p>
+        <div class="capability-proof">&rarr; The GitHub Actions pipeline behind both live tools</div>
+      </div>
+      <div class="capability-card">
+        <h4>Custom calculators</h4>
+        <p>An interactive tool built around whatever formula actually drives your decision &mdash; not a generic template.</p>
+        <div class="capability-proof">&rarr; The duration/convexity calculator</div>
+      </div>
+      <div class="capability-card">
+        <h4>Alert &amp; flag logic</h4>
+        <p>Rules that surface what's unusual instead of making you scan a full table every time.</p>
+        <div class="capability-proof">&rarr; Volume/ATR/IV-HV flags, catalyst matching</div>
+      </div>
+      <div class="capability-card">
+        <h4>Honest validation</h4>
+        <p>Claims checked against real data before they ship &mdash; and reported plainly even when the result is "not significant yet."</p>
+        <div class="capability-proof">&rarr; The backtest result above</div>
+      </div>
+    </div>
+
+    <div style="margin-top:44px;">
+      <div class="chart-label">How I work</div>
+      <div class="xp-item">
+        <div class="xp-date mono">Step 01</div>
+        <div>
+          <div class="xp-role">Scope</div>
+          <div class="xp-desc">I write out exactly what the tool will check and why, and share that before writing code &mdash; the same propose-first approach visible in every project on this page.</div>
+        </div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-date mono">Step 02</div>
+        <div>
+          <div class="xp-role">Build</div>
+          <div class="xp-desc">Small, purpose-built modules &mdash; a fetch layer, a calculation layer, a reporting layer &mdash; rather than one large script, so any one piece can fail without taking down the rest.</div>
+        </div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-date mono">Step 03</div>
+        <div>
+          <div class="xp-role">Verify</div>
+          <div class="xp-desc">Tested against real data or known reference cases before I call anything done &mdash; every signal and formula on this site was checked this way, not just eyeballed.</div>
+        </div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-date mono">Step 04</div>
+        <div>
+          <div class="xp-role">Deliver</div>
+          <div class="xp-desc">A working tool plus a plain-language note on what it does and doesn't do, limitations included &mdash; the same way the backtest result above is shown honestly rather than left out.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sample-dashboard">
+      <div class="sample-banner">&#9888; Sample data &mdash; illustrative only, not a live feed</div>
+      <div class="sample-dashboard-body">
+        <div class="sample-dashboard-title">Riverside Coffee Roasters <span class="mono" style="color:var(--slate); font-size:13px;">(fictional)</span></div>
+        <div class="sample-dashboard-sub">Daily sales anomaly tracker &mdash; applying the same flagging pattern as the market tool above to a small business's day-to-day numbers</div>
+        <div class="signals-table-wrap" style="border-color:var(--brass);">
+          <table class="signals-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Location</th><th>Daily Sales</th><th>vs. 30-Day Avg</th><th>Flag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Aug 1</td><td>Downtown</td><td>$1,240</td><td>+8%</td><td></td></tr>
+              <tr><td>Aug 2</td><td>Downtown</td><td>$1,180</td><td>+3%</td><td></td></tr>
+              <tr class="signals-row-flagged"><td>Aug 3</td><td>Downtown</td><td>$2,910</td><td>+142%</td><td><span class="flag-tag">FLAG</span></td></tr>
+              <tr><td>Aug 4</td><td>Downtown</td><td>$1,340</td><td>+16%</td><td></td></tr>
+              <tr><td>Aug 5</td><td>Westside</td><td>$890</td><td>&minus;4%</td><td></td></tr>
+              <tr class="signals-row-flagged"><td>Aug 6</td><td>Westside</td><td>$310</td><td>&minus;66%</td><td><span class="flag-tag">FLAG</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="research-notes" style="margin-top:40px;">
+      <h4>Scope &amp; timeline</h4>
+      <ul>
+        <li>A single-source dashboard &mdash; one data feed, a handful of tracked metrics, and a calculator like the yield curve tool above &mdash; is one clear tier of scope.</li>
+        <li>Something pulling from multiple sources, with alerting and a scheduled pipeline behind it, is a larger tier &mdash; closer to the full market analysis tool.</li>
+        <li>I'm not quoting fixed turnaround times here: these projects were built solo, without the scoping and revision back-and-forth a real engagement involves, so a specific number wouldn't be an honest estimate of what working together would actually take.</li>
+      </ul>
+    </div>
+
+    <div class="research-notes" style="margin-top:32px;">
+      <h4>What I can't do</h4>
+      <ul>
+        <li>Not a fit for: production systems at scale, user authentication, databases, high-availability infrastructure, or enterprise system integrations.</li>
+        <li>What I build well: small, focused tools that watch one thing and tell you clearly when it changes &mdash; a dashboard, an automation, a calculator, built around a process you're already running by hand.</li>
+        <li>If you need a full application with logins and a database behind it, that's outside what I do (for now). If it's "I check this manually and wish I didn't have to," that's exactly what's on this page.</li>
+      </ul>
+    </div>
+
+    <div class="services-cta">
+      <p>If a manual, recurring data task is something you'd rather not do by hand anymore, I'm happy to talk through what a small tool for it could look like.</p>
+      <a class="btn primary" href="mailto:Aliqadri834@gmail.com?subject=Business%20inquiry%3A%20dashboard%2Fautomation">Get in touch about a project &rarr;</a>
+    </div>
+  </div>
+</section>
+
 <footer id="contact">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow" style="margin-bottom:0;">Get in touch</span>
-      <span class="section-num mono">07</span>
+      <span class="section-num mono">08</span>
     </div>
     <div class="contact-row">
       <h3 class="contact-title">Open to conversations.</h3>
